@@ -1,7 +1,5 @@
 # NLP Transformers
-> The entire repository covers 2 aspects - firstly implementation of pointnet architecture to classify objects, perform part segmentation and also to perform semantic segmentation, secondly it helps us to visualize the data around these pointnet architecture and perform prediction pipeline on test datasets using DASH Framework. The modelling aspect is done by utilizing tensorflow 2 and code waork is completed by using keras.
-
-> Live demo [_here_](https://www.example.com). <!-- If you have the project hosted somewhere, include the link here. -->
+> The entire repository encourages the execution of transformer models for NLP related tasks. It covers state-of-art transformers models such as BERT, TF5, etc. To understand the context of this repository, you will require to have an idea on how to implement tokenizers, perform NER, extract POS tags, etc. 
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -30,23 +28,20 @@
 
 ## Technologies Used
 - Tensorflow2
-- Keras
-- Dash 
 
 ## Features
 List the ready features here:
-- Training and Inferencing Pointnet Classifier - Done
-- Training and Inferencing Pointnet Part Segmenter - Done
-- Training and Inferencing Pointnet Semantic Segmenter - To Be Started
+- BERT (Bidirectinal Encoder Representation of Transformers):  
+  1. 
 
 ## Screenshots
 ![Pointnet Classifier Frontend](./repo_assets/Pointnet_Classifier_Frontend.jpeg)
 ![Pointnet Part Segmenter Frontend](./repo_assets/Pointnet_Part_Segmenter_Frontend.jpeg)
 
 ## Setup:
-- git clone https://github.com/ManashJKonwar/IP-Pointnet.git (Clone the repository)
-- python3 -m venv IPPointnetVenv (Create virtual environment from existing python3)
-- activate the "IPPointnetVenv" (Activating the virtual environment)
+- git clone https://github.com/ManashJKonwar/NLP-Transformers.git (Clone the repository)
+- python3 -m venv NLPTransformersVenv (Create virtual environment from existing python3)
+- activate the "NLPTransformersVenv" (Activating the virtual environment)
 - pip install -r requirements.txt (Install all required python modules)
 
 ## Dataset Utilized:
@@ -59,7 +54,6 @@ Credit goes to [ShapeNet dataset](https://shapenet.org/). Its an ongoing effort 
 full ShapeNet dataset with clean single 3D models and manually verified category and alignment annotations. It covers 55 common object categories, with about 51,300 unique 3D models.
 I have utilized only 12 object categories of PASCAL 3D+, included as part of the ShapenetCore dataset and each of this category contains part level labelling for perform training as 
 well as validation runs
-
 
 ## Usage
 ### For Training PointNet:
