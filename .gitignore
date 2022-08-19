@@ -131,3 +131,4 @@ dmypy.json
 # Excluding directories/files
 .vscode/*
 input/*
+output/*
