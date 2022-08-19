@@ -5,7 +5,7 @@ TRAIN_BATCH_SIZE = 32
 VALID_BATCH_SIZE = 8
 EPOCHS = 10
 BASE_MODEL_PATH = "input/ner/bert_base_uncased"
-MODEL_PATH = "model.bin"
+MODEL_PATH = "output/ner/model.bin"
 TRAINING_FILE = "input/ner/ner_dataset.csv"
 TOKENIZER = transformers.BertTokenizer.from_pretrained(
     BASE_MODEL_PATH,

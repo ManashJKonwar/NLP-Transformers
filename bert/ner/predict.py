@@ -10,7 +10,7 @@ from model import EntityModel
 
 if __name__ == "__main__":
 
-    meta_data = joblib.load("meta.bin")
+    meta_data = joblib.load(r"output\ner\meta.bin")
     enc_pos = meta_data["enc_pos"]
     enc_tag = meta_data["enc_tag"]
 
@@ -18,7 +18,7 @@ if __name__ == "__main__":
     num_tag = len(list(enc_tag.classes_))
 
     sentence = """
-    abhishek is going to india
+    manash is training custom NER in bangalore
     """
     tokenized_sentence = config.TOKENIZER.encode(sentence)
 
@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     device = torch.device("cpu")
     model = EntityModel(num_tag=num_tag, num_pos=num_pos)
-    model.load_state_dict(torch.load(config.MODEL_PATH))
+    model.load_state_dict(torch.load(config.MODEL_PATH, map_location=torch.device('cpu')))
     model.to(device)
 
     with torch.no_grad():
