@@ -1,5 +1,7 @@
 # NLP Transformers
-> The entire repository encourages the execution of transformer models for NLP related tasks. It covers state-of-art transformers models such as BERT, TF5, etc. To understand the context of this repository, you will require to have an idea on how to implement tokenizers, perform NER, extract POS tags, etc. 
+> The entire repository encourages the execution of transformer models for NLP related tasks. It covers state-of-art transformers models such as BERT, TF5, etc. To understand the context of this repository, you will require to have an idea on how to implement tokenizers, perform NER, extract POS tags, etc.  
+
+The prime objective of this repository is to build the custom training pipelines which are very modular in nature and if the input is provided in a specific format, the modules available must be able to generate models accordingly. The current scope of framework covers Pytorch for now but could be extended to support other frameworks like tensorflow, etc.
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -17,73 +19,52 @@
 <!-- * [License](#license) -->
 
 ## General Information
-- The aim of this repository is to implement Pointnet Architecture on readily available 3d datasets and also to create interactive visualizations in DASH
-- The repository helps Deep Learning enthusiasts to implement pointnet architecture by working on generating training pipeline and inference pipeline separately. It also introduces them to the power of building web interactive apps using DASH as primary framework and also will teach them to structure code around web applications.
-- Understand Pointnet Architecture and develop POC around research papers from main authors of Pointnet Architecture.
-- Implement Pointnet for developing a 3d classifier, 3d part segmenter and 3d semantic segmenter.
-<!-- You don't have to answer all the questions - just the ones relevant to your project. -->
-![Pointnet Model Architecture](./repo_assets/PointNet_Architecture.jpg)
-
-- Please do refer to the Learn More Sections in each page of the web application to deep dive into each of this case studies.
+- The prime objective of this repository is to build the custom training pipelines which are very modular in nature and if the input is provided in a specific format, the modules available must be able to generate models accordingly. The current scope of framework covers Pytorch for now but could be extended to support other frameworks like tensorflow, etc.  
+- Make the individual NLP task based modules integratable to NLP Platter.  
 
 ## Technologies Used
-- Tensorflow2
+- Pytorch  
+- Python  
 
 ## Features
 List the ready features here:
 - BERT (Bidirectinal Encoder Representation of Transformers):  
-  1. 
+  1. NER - Done
+  2. Text Classification - In Progress 
 
 ## Screenshots
-![Pointnet Classifier Frontend](./repo_assets/Pointnet_Classifier_Frontend.jpeg)
-![Pointnet Part Segmenter Frontend](./repo_assets/Pointnet_Part_Segmenter_Frontend.jpeg)
 
 ## Setup:
 - git clone https://github.com/ManashJKonwar/NLP-Transformers.git (Clone the repository)
-- python3 -m venv NLPTransformersVenv (Create virtual environment from existing python3)
-- activate the "NLPTransformersVenv" (Activating the virtual environment)
+- python3 -m venv transformersVenv (Create virtual environment from existing python3)
+- activate the "transformersVenv" (Activating the virtual environment)
 - pip install -r requirements.txt (Install all required python modules)
 
 ## Dataset Utilized:
-- [PointNet Classifier](http://3dvision.princeton.edu/projects/2014/3DShapeNets/)
-Credit goes to [ModelNet 10 dataset](http://modelnet.cs.princeton.edu/) which contains CAD Models from 10 common categories. This is actually a subset of ModelNet 40 dataset.
-Each of the point under each object category consist of labelling as to which object category it belongs and this information helps us greatly to perform training as well as validation 
-runs.
-- [Pointnet Part Segmenter](http://3dvision.princeton.edu/projects/2014/3DShapeNets/)
-Credit goes to [ShapeNet dataset](https://shapenet.org/). Its an ongoing effort to establish a richly-annotated, large-scale dataset of 3D shapes. ShapeNetCore is a subset of the 
-full ShapeNet dataset with clean single 3D models and manually verified category and alignment annotations. It covers 55 common object categories, with about 51,300 unique 3D models.
-I have utilized only 12 object categories of PASCAL 3D+, included as part of the ShapenetCore dataset and each of this category contains part level labelling for perform training as 
-well as validation runs
+### BERT Based
+- [Named Entity Recognition](https://www.kaggle.com/datasets/abhinavwalia95/entity-annotated-corpus)  
+Annotated Corpus for Named Entity Recognition using GMB(Groningen Meaning Bank) corpus for entity classification with enhanced and popular features by Natural Language Processing applied to the data set.
+- [Text Classification]()  
 
 ## Usage
-### For Training PointNet:
-- python train_pointnet.py
-### For Running Web Application:
-- python index.py
+### BERT Based  
+For Training custom NER Model:
+- python bert\ner\train.py
+For Inferencing custom NER Model
+- python bert\ner\predict.py
 
 ## Project Status
 Project is: __in progress_ 
-<!-- / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why._ -->
 
 ## Room for Improvement
 Room for improvement:
-- Build a generic classifier for custom 3d dataset
-- Build a generic part segmenter for custom 3d dataset
-- Build a generic semantic segmenter for custom 3d dataset
-- Develop frontend to encompass this generic nature
-- Porvide support for CPUs, GPUs and TPUs as well
-
-To do:
-- Finish developing inference end of part segmenter at DASH end
-- Start developing semantic segmenter
+- Provide support for other deep learning frameworks like tensorflow
 
 ## References
-[1] PointNet: Deep Learning on Point Sets for 3D Classification and Segmentation; Charles R. Qi, Hao Su, Kaichun Mo, Leonidas J. Guibas;
-CVPR 2017; https://arxiv.org/abs/1612.00593.
+[1] BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding - Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova - [Paper Link](https://arxiv.org/pdf/1810.04805.pdf)
 
 ## Acknowledgements
-- This project was based on [Point cloud classification with PointNet](https://keras.io/examples/vision/pointnet/).
-- This project was based on [Point cloud segmentation with PointNet](https://keras.io/examples/vision/pointnet_segmentation/).
+- Official code base for BERT - [Link](https://github.com/google-research/bert).
 
 ## Contact
 Created by [@ManashJKonwar](https://github.com/ManashJKonwar) - feel free to contact me!
