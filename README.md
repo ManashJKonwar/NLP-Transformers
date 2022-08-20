@@ -29,8 +29,8 @@ The prime objective of this repository is to build the custom training pipelines
 ## Features
 List the ready features here:
 - BERT (Bidirectinal Encoder Representation of Transformers):  
-  1. NER - Done
-  2. Text Classification - In Progress 
+  1. NER - **Done**
+  2. Text Classification - **In Progress** 
 
 ## Screenshots
 
@@ -44,14 +44,24 @@ List the ready features here:
 ### BERT Based
 - [Named Entity Recognition](https://www.kaggle.com/datasets/abhinavwalia95/entity-annotated-corpus)  
 Annotated Corpus for Named Entity Recognition using GMB(Groningen Meaning Bank) corpus for entity classification with enhanced and popular features by Natural Language Processing applied to the data set.
-- [Text Classification]()  
+- [Text Classification](https://www.kaggle.com/datasets/sainijagjit/bbc-dataset)  
+Labeled data which classifies news covered in BBC into multiple categories.   
 
 ## Usage
 ### BERT Based  
-For Training custom NER Model:
-- python bert\ner\train.py
-For Inferencing custom NER Model
-- python bert\ner\predict.py
+1. Named Entity Recognition (NER):  
+    - Training custom NER Model
+      > python bert\ner\train.py
+  
+    - Inferencing custom NER Model  
+      > python bert\ner\predict.py
+
+2. Text Classification:  
+    - Training custom Text Classification Model
+      > python bert\text_classification\train.py
+
+    - Inferencing custom Text Classification Model
+      > python bert\text_classification\predict.py
 
 ## Project Status
 Project is: __in progress_ 
