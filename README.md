@@ -45,7 +45,7 @@ List the ready features here:
 - [Named Entity Recognition](https://www.kaggle.com/datasets/abhinavwalia95/entity-annotated-corpus)  
 Annotated Corpus for Named Entity Recognition using GMB(Groningen Meaning Bank) corpus for entity classification with enhanced and popular features by Natural Language Processing applied to the data set.
 - [Text Classification](https://www.kaggle.com/datasets/sainijagjit/bbc-dataset)  
-Labeled data which classifies news covered in BBC into multiple categories.   
+Labeled data which classifies news covered in BBC into multiple categories. It consists of 2126 different texts and each one is labelled under 5 categories: entertainment, sport, tech, business, or politics
 
 ## Usage
 ### BERT Based  
