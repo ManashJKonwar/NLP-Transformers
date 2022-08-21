@@ -39,8 +39,8 @@ def eval_fn(data_loader, model, device):
     total_loss_val = 0
     for val_ip, val_label in tqdm(data_loader, total=len(data_loader)):
         val_label = val_label.to(device)
-        mask = val_input['attention_mask'].to(device)
-        input_id = val_input['input_ids'].squeeze(1).to(device)
+        mask = val_ip['attention_mask'].to(device)
+        input_id = val_ip['input_ids'].squeeze(1).to(device)
 
         output = model(input_id, mask)
 
