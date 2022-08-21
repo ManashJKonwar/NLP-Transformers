@@ -78,7 +78,9 @@ if __name__ == "__main__":
         valid_dataset, batch_size=config.VALID_BATCH_SIZE, num_workers=1
     )
 
-    device = torch.device("cpu")
+    use_cuda = torch.cuda.is_available()
+    device = torch.device("cuda" if use_cuda else "cpu")
+    
     model = EntityModel(num_tag=num_tag, num_pos=num_pos)
     model.to(device)
 
