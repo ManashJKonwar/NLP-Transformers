@@ -12,7 +12,7 @@ import transformers
 MAX_LEN = 512
 TRAIN_BATCH_SIZE = 2
 VALID_BATCH_SIZE = 2
-EPOCHS = 5
+EPOCHS = 20
 LEARNING_RATE = 1e-6
 BASE_MODEL_PATH = "pretrained_models/bert/bert_base_cased"
 MODEL_PATH = "output/text_classification/model.bin"
