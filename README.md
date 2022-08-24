@@ -31,7 +31,7 @@ List the ready features here:
 - BERT (Bidirectinal Encoder Representation of Transformers):  
   1. Named Entity Recognition (NER) - <mark>**Done**</mark>
   2. Text Classification - <mark>**Done**</mark>  
-  3. Sentiment Analysis - <mark>**In Progress**</mark> 
+  3. Sentiment Analysis - <mark>**Done**</mark> 
 
 ## **Screenshots**
 
@@ -47,7 +47,8 @@ List the ready features here:
 Annotated Corpus for Named Entity Recognition using GMB(Groningen Meaning Bank) corpus for entity classification with enhanced and popular features by Natural Language Processing applied to the data set.
 - [Text Classification](https://www.kaggle.com/datasets/sainijagjit/bbc-dataset)  
 Labeled data which classifies news covered in BBC into multiple categories. It consists of 2126 different texts and each one is labelled under 5 categories: entertainment, sport, tech, business, or politics.  
-- [Sentiment Analysis]()  
+- [Sentiment Analysis](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews)  
+IMDB dataset having 50K movie reviews for natural language processing or Text analytics. This is a dataset for binary sentiment classification containing substantially more data than previous benchmark datasets. They provide a set of 25,000 highly polar movie reviews for training and 25,000 for testing. So, predict the number of positive and negative reviews.
 
 ## **Usage**
 ### **BERT Based**  
