@@ -54,7 +54,6 @@ def eval_fn(data_loader, model, device):
             mask = mask.to(device, dtype=torch.long)
             targets = targets.to(device, dtype=torch.float)
 
-            optimizer.zero_grad()
             outputs = model(
                 ids=ids,
                 mask=mask,
