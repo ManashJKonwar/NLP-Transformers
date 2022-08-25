@@ -60,5 +60,5 @@ def eval_fn(data_loader, model, device):
                 token_type_ids=token_type_ids
             )
             fin_targets.extend(targets.cpu().detach().numpy().tolist())
-            fin_outputs.extend(torch.sigmoid().cpu().detach().numpy().tolist())
+            fin_outputs.extend(torch.sigmoid(outputs).cpu().detach().numpy().tolist())
         return fin_outputs, fin_targets
