@@ -40,9 +40,9 @@ It is build on top of Transformers. Currently, there are 2 variants of BERT:
 12 layers (transformer blocks), 12 attention heads, and 110 million parameters  
 2. **BERT large:**  
 24 layers (transformer blocks), 16 attention heads and, 340 million parameters  
-  ![bert variations](assets\bert_variation.png)  
+  ![bert variations](./assets/bert_variation.png)  
 
-![transformer architecture](assets\transformer_architecture.png)
+![transformer architecture](./assets/transformer_architecture.png)
 
 There are 2 main components of transformer arhcitecture. These are:
 1. **Encoder Stack:**  
@@ -64,7 +64,7 @@ For a given token, its input representation is constructed by summing the corres
 
 These combinations of preprocessing steps make BERT so versatile. This implies that without making any major change in the model’s architecture, we can easily train it on multiple kinds of NLP tasks.  
 
-![bert text preprocessing](assets\bert_text_preprocessing.png)
+![bert text preprocessing](./assets/bert_text_preprocessing.png)
 
 #### ![#1589F0](https://via.placeholder.com/15/1589F0/1589F0.png) **Pre-Training BERT**  
 The BERT model is pre-trained on 2 specific tasks:
@@ -84,7 +84,7 @@ In this pre-training task, training dataset having certain no fo sentences were 
 
 BERT architecture is completely pre-trained based on unsupervised data and would play a vital role in capturing language relevance and context. This model could be further trained for variety of NLP tasks and the BERT researchers provide a snippet of the same in the reseach paper.  
 
-![bert nlp tasks](assets\bert_nlp_tasks.png)
+![bert nlp tasks](./assets/bert_nlp_tasks.png)
 
 ## **Technologies Used**
 - Pytorch  
