@@ -20,7 +20,9 @@ The prime objective of this repository is to build the custom training pipelines
 
 ## **General Information**
 - The prime objective of this repository is to build the custom training pipelines which are very modular in nature and if the input is provided in a specific format, the modules available must be able to generate models accordingly. The current scope of framework covers Pytorch for now but could be extended to support other frameworks like tensorflow, etc.  
-- Make the individual NLP task based modules integratable to NLP Platter.  
+- Make the individual NLP task based modules integratable to NLP Platter. 
+
+### 
 
 ## **Technologies Used**
 - Pytorch  
@@ -81,7 +83,8 @@ Room for improvement:
 - Provide support for other deep learning frameworks like tensorflow
 
 ## **References**
-[1] BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding - Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova - [Paper Link](https://arxiv.org/pdf/1810.04805.pdf)
+[1] BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding - Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova - [Paper Link](https://arxiv.org/pdf/1810.04805.pdf)  
+[2] Attention is All you need - Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, Illia Polosukhin - [Paper Link](https://arxiv.org/pdf/1706.03762.pdf)
 
 ## **Acknowledgements**
 - Official code base for BERT - [Link](https://github.com/google-research/bert).
