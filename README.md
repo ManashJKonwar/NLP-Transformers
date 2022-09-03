@@ -95,7 +95,8 @@ List the ready features here:
 - BERT (Bidirectinal Encoder Representation of Transformers):  
   1. Named Entity Recognition (NER) - <mark>**Done**</mark>
   2. Text Classification - <mark>**Done**</mark>  
-  3. Sentiment Analysis - <mark>**Done**</mark> 
+  3. Sentiment Analysis - <mark>**Done**</mark>  
+  4. Text Summarization - <mark>**In Progress**</mark> 
 
 ## **Screenshots**
 
@@ -112,7 +113,8 @@ Annotated Corpus for Named Entity Recognition using GMB(Groningen Meaning Bank) 
 - [Text Classification](https://www.kaggle.com/datasets/sainijagjit/bbc-dataset)  
 Labeled data which classifies news covered in BBC into multiple categories. It consists of 2126 different texts and each one is labelled under 5 categories: entertainment, sport, tech, business, or politics.  
 - [Sentiment Analysis](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews)  
-IMDB dataset having 50K movie reviews for natural language processing or Text analytics. This is a dataset for binary sentiment classification containing substantially more data than previous benchmark datasets. They provide a set of 25,000 highly polar movie reviews for training and 25,000 for testing. So, predict the number of positive and negative reviews.
+IMDB dataset having 50K movie reviews for natural language processing or Text analytics. This is a dataset for binary sentiment classification containing substantially more data than previous benchmark datasets. They provide a set of 25,000 highly polar movie reviews for training and 25,000 for testing. So, predict the number of positive and negative reviews.  
+- [Text Summarization]()
 
 ## **Usage**
 ### **BERT Based**  
@@ -135,7 +137,14 @@ IMDB dataset having 50K movie reviews for natural language processing or Text an
       > python bert\sentiment_analysis\train.py
 
     - Inferencing custom Sentiment Analysis Model
-      > python bert\sentiment_analysis\predict.py 
+      > python bert\sentiment_analysis\predict.py  
+
+4. Text Summarization:  
+    - Training custom Text Summarization Model
+      > python bert\text_summarizer\train.py
+
+    - Inferencing custom Text Summarization Model
+      > python bert\text_summarizer\predict.py  
 
 ## **Project Status**
 Project is: __in progress_ 
