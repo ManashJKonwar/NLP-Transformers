@@ -15,6 +15,8 @@ VALID_BATCH_SIZE = 8
 EPOCHS = 10
 BASE_MODEL_PATH = "pretrained_models/bert/bert_base_uncased"
 MODEL_PATH = "output/text_summarization/model.bin"
+ARTICLE_PATH = "input/text_summarization/news_articles"
+SUMMARY_PATH = "input/text_summarization/summaries"
 TRAINING_FILE = "input/text_summarization/text_summarization_dataset.csv"
 TOKENIZER = transformers.BertTokenizer.from_pretrained(
     BASE_MODEL_PATH,
