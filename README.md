@@ -114,7 +114,8 @@ Annotated Corpus for Named Entity Recognition using GMB(Groningen Meaning Bank) 
 Labeled data which classifies news covered in BBC into multiple categories. It consists of 2126 different texts and each one is labelled under 5 categories: entertainment, sport, tech, business, or politics.  
 - [Sentiment Analysis](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews)  
 IMDB dataset having 50K movie reviews for natural language processing or Text analytics. This is a dataset for binary sentiment classification containing substantially more data than previous benchmark datasets. They provide a set of 25,000 highly polar movie reviews for training and 25,000 for testing. So, predict the number of positive and negative reviews.  
-- [Text Summarization]()
+- [Text Summarization](https://www.kaggle.com/datasets/pariza/bbc-news-summary)  
+BBC Summary dataset consists of news articles based summaries for 5 categories - business, entertainment, politics, sport and tech. The dataset contains folders segregated into news articles (containing the entire news article in txt format) and summaries (containing the summarized news in txt format). We will try to score each sentence in each articles and decide based on the scoring attained, whether to include as part of summarized text or not. 
 
 ## **Usage**
 ### **BERT Based**  
