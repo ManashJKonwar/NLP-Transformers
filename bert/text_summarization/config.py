@@ -9,7 +9,7 @@ __status__ = "Development"
 
 import transformers
 
-MAX_LEN = 128
+MAX_LEN = 512
 TRAIN_BATCH_SIZE = 32
 VALID_BATCH_SIZE = 8
 EPOCHS = 10
