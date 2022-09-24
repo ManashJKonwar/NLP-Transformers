@@ -2,5 +2,6 @@ transformers==4.21.1  # https://pypi.org/project/transformers/4.21.1/  # State-o
 torch==1.12.1  # https://pypi.org/project/torch/1.12.1/  # Tensors and Dynamic neural networks in Python with strong GPU acceleration
 scikit-learn==1.1.2  # https://pypi.org/project/scikit-learn/1.1.2/  # A set of python modules for machine learning and data mining
 spacy==3.4.1  # https://pypi.org/project/spacy/3.4.1/  # Industrial-strength Natural Language Processing (NLP) in Python
+rouge-score==0.1.2  # https://pypi.org/project/rouge-score/0.1.2/  # Pure python implementation of ROUGE-1.5.5.
 
 pandas==1.4.3  # https://pypi.org/project/pandas/1.4.3/  # Powerful data structures for data analysis, time series, and statistics
