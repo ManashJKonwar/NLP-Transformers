@@ -14,6 +14,7 @@ import pandas as pd
 
 from tqdm import tqdm
 from sklearn import model_selection
+from rouge_score import rouge_scorer 
 
 import config
 import dataset
@@ -116,6 +117,71 @@ def extract_sentences(train_df, valid_df):
                 pickle.dump(write_dict[write_key], out_file, protocol=pickle.HIGHEST_PROTOCOL)
 
         return train_article_dict, train_sentence_list, test_article_dict, test_sentence_list
+
+def get_final_data(train_article_dict, train_sentence_list, test_article_dict, test_sentence_list):
+    """
+    Extracts labels and balanced dataset by performing 3 operations
+    1. Extract labels for each sentence in sentence list
+    2. If dataset is imbalanced, i.e. most sentences are unlikely to be in the respective summary
+    3. Construct new dataset of examples that balances positive examples with negative examples
+    """
+    scorer = rouge_scorer.RougeScorer(['rouge1', 'rougeL'], use_stemmer=True)
+
+    def get_rougue_score(text, highlights, metric="rougeL"):
+        max_score = 0
+        for h_text in highlights:
+            score =  scorer.score(text, h_text)[metric].fmeasure
+            # print(score, text, "\n \t" , h_text)
+            if score > max_score:
+                max_score = score 
+        return max_score 
+
+    def get_label(sent, doc_dict,  score_threshold = 0.55):
+        sent_id, doc_id, sentence = sent["sentid"], sent["docid"], sent["text"]  
+        summaries = doc_dict[doc_id]["summary"].split("\n")
+        doc = doc_dict[doc_id]["article"]
+
+        label_score = get_rougue_score(sentence, summaries) 
+        # Normalize label to 0/1 based on rogue score threshold
+        label_score = 0 if label_score < score_threshold else 1 
+        return (sentence, doc, label_score)
+        
+    def sub_sample(sents_batch, doc_dict, neg_multiplier=2):
+        # get labels 
+        vals = [get_label(x, doc_dict)  for x in tqdm(sents_batch, desc='Extracting rouge scores for sentence list')] 
+
+        # construct arrays of sentences, corresponding documents and labels  
+        sents, docs, y = [], [], [] 
+        for row in vals:
+            sents.append(row[0])
+            docs.append(row[1])
+            y.append(row[2])
+
+        # get balanced number of positive and negative
+        sub_df = pd.DataFrame.from_dict({"sents":sents, "docs":docs, "y":y}) 
+        pos_df = sub_df[sub_df.y == 1]
+        neg_df = sub_df[sub_df.y == 0]
+
+        print("Negative sample size:", len(neg_df))
+        print("Positive sample size:", len(pos_df))
+
+        sub_neg_df = neg_df.sample(len(pos_df)*neg_multiplier) 
+        balanced_df = pd.concat([pos_df, sub_neg_df]).reset_index(drop=True)
+        
+        return balanced_df
+
+    if os.path.exists(os.path.join('input', 'text_summarization', 'train_balanced.csv')) and \
+    os.path.exists(os.path.join('input', 'text_summarization', 'valid_balanced.csv')):
+        train_balanced_df = pd.read_csv(os.path.join('input', 'text_summarization', 'train_balanced.csv'))
+        test_balanced_df = pd.read_csv(os.path.join('input', 'text_summarization', 'valid_balanced.csv'))
+    else:
+        train_balanced_df = sub_sample(train_sentence_list, train_article_dict)
+        test_balanced_df = sub_sample(test_sentence_list, test_article_dict)
+
+        train_balanced_df.to_csv(os.path.join('input', 'text_summarization', 'train_balanced.csv'), index=False)
+        test_balanced_df.to_csv(os.path.join('input', 'text_summarization', 'valid_balanced.csv'), index=False)
+
+    return train_balanced_df, test_balanced_df
         
 if __name__ == "__main__":
     df_summarizer, articles, summaries, categories = process_data(config.ARTICLE_PATH, config.SUMMARY_PATH)
@@ -127,6 +193,8 @@ if __name__ == "__main__":
     df_train = df_train.reset_index(drop=True)
     df_valid = df_valid.reset_index(drop=True)
 
-    train_article_dict, train_article_list, test_sentence_dict, test_sentence_list = extract_sentences(
+    train_article_dict, train_article_list, valid_sentence_dict, valid_sentence_list = extract_sentences(
         train_df=df_train, valid_df=df_valid
     )
+
+    train_balanced_df, valid_balanced_df = get_final_data(train_article_dict, train_article_list, valid_sentence_dict, valid_sentence_list)
