@@ -12,6 +12,8 @@ import spacy
 import pickle
 import pandas as pd
 
+import torch
+
 from tqdm import tqdm
 from sklearn import model_selection
 from rouge_score import rouge_scorer 
@@ -197,4 +199,23 @@ if __name__ == "__main__":
         train_df=df_train, valid_df=df_valid
     )
 
-    train_balanced_df, valid_balanced_df = get_final_data(train_article_dict, train_article_list, valid_sentence_dict, valid_sentence_list)
+    df_train_balanced, df_valid_balanced = get_final_data(train_article_dict, train_article_list, valid_sentence_dict, valid_sentence_list)
+
+    train_dataset = dataset.TextSummarizerDataset(
+        data=df_train_balanced
+    )
+
+    train_data_loader = torch.utils.data.DataLoader(
+        train_dataset, batch_size=config.TRAIN_BATCH_SIZE, num_workers=4, shuffle=True
+    )
+
+    valid_dataset = dataset.TextSummarizerDataset(
+        data=df_valid_balanced
+    )
+
+    valid_data_loader = torch.utils.data.DataLoader(
+        valid_dataset, batch_size=config.VALID_BATCH_SIZE, num_workers=1, shuffle=True
+    )
+
+    use_cuda = torch.cuda.is_available()
+    device = torch.device("cuda" if use_cuda else "cpu")
