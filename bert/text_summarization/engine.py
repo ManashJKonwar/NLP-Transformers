@@ -64,7 +64,7 @@ def eval_fn(data_loader, model, device):
             doc_mask = doc_mask.to(device, dtype = torch.long)
             targets = targets.to(device, dtype = torch.float)
 
-            output = model(sent_ids, doc_ids, sent_mask, doc_mask)
+            outputs = model(sent_ids, doc_ids, sent_mask, doc_mask)
 
             lfn = nn.BCELoss()
             batch_loss = lfn(outputs, targets)
