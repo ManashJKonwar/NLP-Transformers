@@ -20,9 +20,9 @@ def mean_pooling(model_output, attention_mask):
     return sum_embeddings / sum_mask
 
 class TextSummarizerModel(nn.Module):
-    def __init__(self, n_feature=512, dropout=0.3):
+    def __init__(self, n_feature=768, dropout=0.3):
         super(TextSummarizerModel, self).__init__()
-        self.bert =transformers.BertModel.from_pretrained(config.BASE_MODEL_PATH) 
+        self.bert = transformers.BertModel.from_pretrained(config.BASE_MODEL_PATH) 
         self.pre_classifier = nn.Linear(n_feature*3, 768)
         self.dropout = nn.Dropout(dropout)
         self.classifier = nn.Linear(768, 1)
@@ -33,13 +33,13 @@ class TextSummarizerModel(nn.Module):
         sentence_embeddings = mean_pooling(sent_output, sent_mask) 
         
         article_output = self.bert(input_ids=doc_ids, attention_mask=doc_mask) 
-        article_embeddings = mean_pooling(doc_output, doc_mask)
+        article_embeddings = mean_pooling(article_output, doc_mask)
 
         # Elementwise product of sentence embeddings and article embeddings
-        combined_features = sentence_embeddings * doc_embeddings  
+        combined_features = sentence_embeddings * article_embeddings  
 
         # Concatenate input features and their elementwise product
-        concat_features = torch.cat((sentence_embeddings, doc_embeddings, combined_features), dim=1)   
+        concat_features = torch.cat((sentence_embeddings, article_embeddings, combined_features), dim=1)   
         
         pooler = self.pre_classifier(concat_features) 
         pooler = nn.ReLU()(pooler)

@@ -7,6 +7,7 @@ __maintainer__ = "konwar.m"
 __email__ = "rickykonwar@gmail.com"
 __status__ = "Development"
 
+import torch
 import config
 
 class TextSummarizerDataset:
