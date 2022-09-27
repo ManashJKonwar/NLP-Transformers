@@ -23,13 +23,6 @@ if __name__ == "__main__":
     review = str(sentence)
     review = " ".join(review.split())
 
-    inputs = config.TOKENIZER.encode_plus(
-        review, 
-        None, 
-        add_special_tokens=True, 
-        max_length=config.MAX_LEN
-    )
-
     test_dataset = dataset.SentimentAnalyzerDataset(
         reviews=[review], 
         targets=[0]
