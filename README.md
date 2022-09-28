@@ -96,7 +96,7 @@ List the ready features here:
   1. Named Entity Recognition (NER) - <mark>**Done**</mark>
   2. Text Classification - <mark>**Done**</mark>  
   3. Sentiment Analysis - <mark>**Done**</mark>  
-  4. Text Summarization - <mark>**In Progress**</mark> 
+  4. Text Summarization - <mark>**Done**</mark> 
 
 ## **Screenshots**
 
