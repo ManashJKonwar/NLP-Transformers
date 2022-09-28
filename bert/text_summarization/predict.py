@@ -9,6 +9,8 @@ __status__ = "Development"
 
 import spacy
 import torch
+import numpy as np
+import matplotlib.pyplot as plt
 
 from tqdm import tqdm 
 
@@ -102,3 +104,11 @@ if __name__ == "__main__":
     summary = [ x["sentence"] for x in sorted_result]
     summary = " ".join(summary)
     print(summary)
+
+    sent_lenth = 70
+    score_vals = ([x[0] for x in scores] ) 
+    sub_sents = [str(round(score_vals[i],2)) + " : " + article_sentences[i][:sent_lenth] + " ..  " for i in range(len(article_sentences))] 
+    with plt.xkcd():
+        plt.figure(figsize=(20,10))
+        plt.barh(sub_sents[::-1], score_vals[::-1])
+        plt.show()
