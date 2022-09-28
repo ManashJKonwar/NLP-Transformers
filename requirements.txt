@@ -5,3 +5,4 @@ spacy==3.4.1  # https://pypi.org/project/spacy/3.4.1/  # Industrial-strength Nat
 rouge-score==0.1.2  # https://pypi.org/project/rouge-score/0.1.2/  # Pure python implementation of ROUGE-1.5.5.
 
 pandas==1.4.3  # https://pypi.org/project/pandas/1.4.3/  # Powerful data structures for data analysis, time series, and statistics
+matplotlib==3.6.0  # https://pypi.org/project/matplotlib/3.6.0/  # Python plotting package
