@@ -97,6 +97,7 @@ List the ready features here:
   2. Text Classification - <mark>**Done**</mark>  
   3. Sentiment Analysis - <mark>**Done**</mark>  
   4. Text Summarization - <mark>**Done**</mark> 
+  5. Question Answering - <mark>**In Progress**</mark>
 
 ## **Screenshots**
 
@@ -115,7 +116,9 @@ Labeled data which classifies news covered in BBC into multiple categories. It c
 - [Sentiment Analysis](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews)  
 IMDB dataset having 50K movie reviews for natural language processing or Text analytics. This is a dataset for binary sentiment classification containing substantially more data than previous benchmark datasets. They provide a set of 25,000 highly polar movie reviews for training and 25,000 for testing. So, predict the number of positive and negative reviews.  
 - [Text Summarization](https://www.kaggle.com/datasets/pariza/bbc-news-summary)  
-BBC Summary dataset consists of news articles based summaries for 5 categories - business, entertainment, politics, sport and tech. The dataset contains folders segregated into news articles (containing the entire news article in txt format) and summaries (containing the summarized news in txt format). We will try to score each sentence in each articles and decide based on the scoring attained, whether to include as part of summarized text or not. 
+BBC Summary dataset consists of news articles based summaries for 5 categories - business, entertainment, politics, sport and tech. The dataset contains folders segregated into news articles (containing the entire news article in txt format) and summaries (containing the summarized news in txt format). We will try to score each sentence in each articles and decide based on the scoring attained, whether to include as part of summarized text or not.  
+- [Question Answering]()  
+
 
 ## **Usage**
 ### **BERT Based**  
@@ -146,6 +149,13 @@ BBC Summary dataset consists of news articles based summaries for 5 categories -
 
     - Inferencing custom Text Summarization Model
       > python bert\text_summarizer\predict.py  
+
+5. Question Answering:  
+    - Training custom Question Answering Model
+      > python bert\question_answering\train.py
+
+    - Inferencing custom Question Answering Model
+      > python bert\question_answering\predict.py  
 
 ## **Project Status**
 Project is: __in progress_ 
