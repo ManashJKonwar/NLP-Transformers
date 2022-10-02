@@ -8,14 +8,71 @@ __email__ = "rickykonwar@gmail.com"
 __status__ = "Development"
 
 import os
+import copy
 import json
 import numpy as np
 import pandas as pd
 
+from tqdm import tqdm
 from sklearn import model_selection
 
 import config
 import dataset
+
+def add_end_index(df, is_train=True):
+    df_modified = df.copy()
+    if is_train:
+        df_modified['answer_end'] = np.nan 
+
+    final_list = []
+    for row_Index, row_Data in tqdm(df.iterrows(), total=df.shape[0], desc='Adding_answer_end_indexes'):
+        if is_train:
+            try:
+                gold_text = row_Data.text
+                start_idx = row_Data.answer_start
+                end_idx = start_idx + len(gold_text)
+
+                if row_Data.context[start_idx:end_idx] == gold_text:
+                    df_modified.iloc[row_Index, df_modified.columns.get_loc('answer_end')] = end_idx
+                else:
+                    for n in [1, 2]:
+                        if context[start_idx-n:end_idx-n] == gold_text:
+                            # this means the answer is off by 'n' tokens
+                            df_modified.iloc[row_Index, df_modified.columns.get_loc('answer_start')] = start_idx - n
+                            df_modified.iloc[row_Index, df_modified.columns.get_loc('answer_end')] = end_idx - n
+            except Exception as ex:
+                continue
+        else:
+            try:
+                answer_list = row_Data.answers
+                answer_final_list = copy.deepcopy(answer_list)
+                if isinstance(answer_list, list):
+                    count=0
+                    for ans in answer_list:
+                        gold_text = ans['text']
+                        start_idx = ans['answer_start']
+                        end_idx = start_idx + len(gold_text)
+
+                        if row_Data.context[start_idx:end_idx] == gold_text:
+                            answer_final_list[count]['answer_end'] = end_idx
+                        else:
+                            for n in [1, 2]:
+                                if context[start_idx-n:end_idx-n] == gold_text:
+                                    # this means the answer is off by 'n' tokens
+                                    answer_final_list[count]['answer_start'] = start_idx - n
+                                    answer_final_list[count]['answer_end'] = end_idx - n
+                        count+=1
+                    
+                # df_modified.iloc[row_Index, df_modified.columns.get_loc('answers')] = answer_final_list
+                final_list.append(answer_final_list)
+            except Exception as ex:
+                print(ex)
+                continue
+    
+    if not is_train:
+        df_modified['answers'] = final_list
+    
+    return df_modified
 
 def process_data(input_file_path, is_train=True, record_path = ['data','paragraphs','qas','answers'], verbose = 1):
     """
@@ -42,7 +99,7 @@ def process_data(input_file_path, is_train=True, record_path = ['data','paragrap
         r = pd.json_normalize(file,record_path[:-2])
         
         if is_train:
-            #combining it into single dataframe
+            # Combining it into single dataframe
             idx = np.repeat(r['context'].values, r.qas.str.len())
             ndx = np.repeat(m['id'].values,m['answers'].str.len())
             m['context'] = idx
@@ -53,10 +110,13 @@ def process_data(input_file_path, is_train=True, record_path = ['data','paragrap
                 print("shape of the dataframe is {}".format(main.shape))
                 print("Done")
 
+            # Getting answer ending index
+            main = add_end_index(df=main)
+
             main.to_csv(config.TRAINING_FILE, index=False) 
             return main
         else:
-            #combining it into single dataframe
+            # Combining it into single dataframe
             idx = np.repeat(r['context'].values, r.qas.str.len())
             m['context'] = idx
             main = m[['id','question','context','answers']].set_index('id').reset_index()
@@ -65,6 +125,9 @@ def process_data(input_file_path, is_train=True, record_path = ['data','paragrap
                 print("shape of the dataframe is {}".format(main.shape))
                 print("Done")
             
+            # Getting answer ending index
+            main = add_end_index(df=main, is_train=False)
+
             main.to_csv(config.VALID_FILE, index=False)
             return main
 
