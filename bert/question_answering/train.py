@@ -71,7 +71,8 @@ def add_end_index(df, is_train=True):
     
     if not is_train:
         df_modified['answers'] = final_list
-    
+
+    df_modified = df_modified.rename(columns={'text': 'answer', 'index': 'id'})
     return df_modified
 
 def process_data(input_file_path, is_train=True, record_path = ['data','paragraphs','qas','answers'], verbose = 1):
