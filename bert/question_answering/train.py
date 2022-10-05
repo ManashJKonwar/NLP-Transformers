@@ -26,60 +26,38 @@ import dataset
 import engine
 from model import QuestionAnsweringModel
 
-def add_end_index(df, is_train=True):
+def add_end_index(df):
     df_modified = df.copy()
-    if is_train:
-        df_modified['answer_end'] = np.nan 
 
     final_list = []
     for row_Index, row_Data in tqdm(df.iterrows(), total=df.shape[0], desc='Adding_answer_end_indexes'):
-        if is_train:
-            try:
-                gold_text = row_Data.text
-                start_idx = row_Data.answer_start
-                end_idx = start_idx + len(gold_text)
+        try:
+            answer_list = row_Data.answers
+            answer_final_list = copy.deepcopy(answer_list)
+            if isinstance(answer_list, list):
+                count=0
+                for ans in answer_list:
+                    gold_text = ans['text']
+                    start_idx = ans['answer_start']
+                    end_idx = start_idx + len(gold_text)
 
-                if row_Data.context[start_idx:end_idx] == gold_text:
-                    df_modified.iloc[row_Index, df_modified.columns.get_loc('answer_end')] = end_idx
-                else:
-                    for n in [1, 2]:
-                        if context[start_idx-n:end_idx-n] == gold_text:
-                            # this means the answer is off by 'n' tokens
-                            df_modified.iloc[row_Index, df_modified.columns.get_loc('answer_start')] = start_idx - n
-                            df_modified.iloc[row_Index, df_modified.columns.get_loc('answer_end')] = end_idx - n
-            except Exception as ex:
-                continue
-        else:
-            try:
-                answer_list = row_Data.answers
-                answer_final_list = copy.deepcopy(answer_list)
-                if isinstance(answer_list, list):
-                    count=0
-                    for ans in answer_list:
-                        gold_text = ans['text']
-                        start_idx = ans['answer_start']
-                        end_idx = start_idx + len(gold_text)
+                    if row_Data.context[start_idx:end_idx] == gold_text:
+                        answer_final_list[count]['answer_end'] = end_idx
+                    else:
+                        for n in [1, 2]:
+                            if context[start_idx-n:end_idx-n] == gold_text:
+                                # this means the answer is off by 'n' tokens
+                                answer_final_list[count]['answer_start'] = start_idx - n
+                                answer_final_list[count]['answer_end'] = end_idx - n
+                    count+=1
+                
+            # df_modified.iloc[row_Index, df_modified.columns.get_loc('answers')] = answer_final_list
+            final_list.append(answer_final_list)
+        except Exception as ex:
+            print(ex)
+            continue
 
-                        if row_Data.context[start_idx:end_idx] == gold_text:
-                            answer_final_list[count]['answer_end'] = end_idx
-                        else:
-                            for n in [1, 2]:
-                                if context[start_idx-n:end_idx-n] == gold_text:
-                                    # this means the answer is off by 'n' tokens
-                                    answer_final_list[count]['answer_start'] = start_idx - n
-                                    answer_final_list[count]['answer_end'] = end_idx - n
-                        count+=1
-                    
-                # df_modified.iloc[row_Index, df_modified.columns.get_loc('answers')] = answer_final_list
-                final_list.append(answer_final_list)
-            except Exception as ex:
-                print(ex)
-                continue
-    
-    if not is_train:
-        df_modified['answers'] = final_list
-
-    df_modified = df_modified.rename(columns={'text': 'answer', 'index': 'id'})
+    df_modified = df_modified.rename(columns={'index': 'id'})
     return df_modified
 
 def process_data(input_file_path, is_train=True, record_path = ['data','paragraphs','qas','answers'], verbose = 1):
@@ -118,6 +96,10 @@ def process_data(input_file_path, is_train=True, record_path = ['data','paragrap
                 print("shape of the dataframe is {}".format(main.shape))
                 print("Done")
 
+            # Adding answer column by combining answered text and its starting index
+            main['answers'] = [[{'text': row_data.text, 'answer_start': row_data.answer_start}] for _, row_data in main.iterrows()]
+            main = main[['index', 'context', 'c_id', 'question', 'answers',]].reset_index(drop=True)
+            
             # Getting answer ending index
             main = add_end_index(df=main)
 
@@ -132,9 +114,11 @@ def process_data(input_file_path, is_train=True, record_path = ['data','paragrap
             if verbose:
                 print("shape of the dataframe is {}".format(main.shape))
                 print("Done")
+
+            main = main[['id', 'context', 'c_id', 'question', 'answers',]].reset_index(drop=True)
             
             # Getting answer ending index
-            main = add_end_index(df=main, is_train=False)
+            main = add_end_index(df=main)
 
             main.to_csv(config.VALID_FILE, index=False)
             return main
@@ -147,7 +131,11 @@ if __name__ == "__main__":
     df_valid = df_valid.reset_index(drop=True)
 
     train_dataset = dataset.QuestionAnsweringDataset(
-        data=df_train
+        context=df_train.context,
+        question=df_train.question,
+        answer=df_train.answer,
+        answer_start_index=df_train.answer_start_index,
+        answer_end_index=df_train._answer_end_index
     )
 
     train_data_loader = torch.utils.data.DataLoader(
