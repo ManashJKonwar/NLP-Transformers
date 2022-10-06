@@ -56,7 +56,8 @@ def add_end_index(df):
         except Exception as ex:
             print(ex)
             continue
-
+    
+    df_modified['answers'] = final_list
     df_modified = df_modified.rename(columns={'index': 'id'})
     return df_modified
 
@@ -69,9 +70,11 @@ def process_data(input_file_path, is_train=True, record_path = ['data','paragrap
     """
     if os.path.exists(config.TRAINING_FILE) and is_train:
         df = pd.read_csv(config.TRAINING_FILE)
+        df['answers'] = df['answers'].apply(lambda x: json.loads(x))
         return df
     elif os.path.exists(config.VALID_FILE) and not is_train:
         df = pd.read_csv(config.VALID_FILE)
+        df['answers'] = df['answers'].apply(lambda x: json.loads(x))
         return df
     else:
         if verbose:
@@ -103,7 +106,15 @@ def process_data(input_file_path, is_train=True, record_path = ['data','paragrap
             # Getting answer ending index
             main = add_end_index(df=main)
 
+            # Jsonifying answers columns
+            main['answers'] = main['answers'].apply(lambda x: json.dumps(x))
+
+            # Writing to file
             main.to_csv(config.TRAINING_FILE, index=False) 
+
+            # Removing jsonification
+            main['answers'] = main['answers'].apply(lambda x: json.loads(x))
+
             return main
         else:
             # Combining it into single dataframe
@@ -120,7 +131,15 @@ def process_data(input_file_path, is_train=True, record_path = ['data','paragrap
             # Getting answer ending index
             main = add_end_index(df=main)
 
+            # Jsonifying answers columns
+            main['answers'] = main['answers'].apply(lambda x: json.dumps(x))
+
+            # Writing to file
             main.to_csv(config.VALID_FILE, index=False)
+
+            # Removing jsonification
+            main['answers'] = main['answers'].apply(lambda x: json.loads(x))
+
             return main
 
 if __name__ == "__main__":
@@ -133,9 +152,7 @@ if __name__ == "__main__":
     train_dataset = dataset.QuestionAnsweringDataset(
         context=df_train.context,
         question=df_train.question,
-        answer=df_train.answer,
-        answer_start_index=df_train.answer_start_index,
-        answer_end_index=df_train._answer_end_index
+        answers=df_train.answers
     )
 
     train_data_loader = torch.utils.data.DataLoader(
@@ -143,7 +160,9 @@ if __name__ == "__main__":
     )
 
     valid_dataset = dataset.QuestionAnsweringDataset(
-        data=df_valid
+        context=df_valid.context,
+        question=df_valid.question,
+        answers=df_valid.answers
     )
 
     valid_data_loader = torch.utils.data.DataLoader(
