@@ -68,31 +68,42 @@ class QuestionAnsweringDataset:
             context_end_idx -= 1
         
         if not (offset_mapping[0][context_start_idx][0] <= answers[0]['answer_start'] and offset_mapping[0][context_end_idx][1] >= answers[0]['answer_end']) :
-            inputs["start_position"] = (cls_index)
-            inputs["end_position"] = (cls_index)
+            inputs["start_positions"] = (cls_index)
+            inputs["end_positions"] = (cls_index)
         else :
             current_token = context_start_idx
             gotStart, gotEnd = False,False
 
             for start_char,end_char in (offset_mapping[0][context_start_idx : context_end_idx  + 1]) :  
                 if (start_char == answers[0]['answer_start']) :
-                    inputs["start_position"] = current_token
+                    inputs["start_positions"] = current_token
                     gotStart = True
                 if (end_char == answers[0]['answer_end']) : 
-                    inputs["end_position"] = current_token
+                    inputs["end_positions"] = current_token
                     gotEnd = True
                 current_token += 1
 
             if (gotStart == False) :
-                inputs["start_position"] = (cls_index)
+                inputs["start_positions"] = (cls_index)
             if (gotEnd == False) :
-                inputs["end_position"] = (cls_index)
+                inputs["end_positions"] = (cls_index)
+
+        # Form binary target start and end position tensors
+        targets = [0] * config.MAX_LEN
+        targets_start = [0] * len(targets)
+        targets_end = [0] * len(targets)
+
+        if inputs["start_positions"] is not None and inputs["end_positions"] is not None:
+            targets_start[inputs["start_positions"]] = 1
+            targets_end[inputs["end_positions"]] = 1
 
         return {
-            "input_ids": torch.tensor(input_ids, dtype=torch.long),
-            "mask": torch.tensor(mask, dtype=torch.long),
-            "offset_mapping": torch.tensor(offset_mapping, dtype=torch.long),
-            "token_type_ids": torch.tensor(token_type_ids, dtype=torch.long),
-            "start_position": inputs["start_position"],
-            "end_position": inputs["end_position"]
+            "input_ids": input_ids,
+            "mask": mask,
+            "offset_mapping": offset_mapping,
+            "token_type_ids": token_type_ids,
+            "start_positions": inputs["start_positions"],
+            "end_positions": inputs["end_positions"],
+            "targets_start": torch.tensor(targets_start, dtype = torch.long),
+            "targets_end": torch.tensor(targets_end, dtype = torch.long)
         }
