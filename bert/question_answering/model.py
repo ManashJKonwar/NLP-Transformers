@@ -14,10 +14,10 @@ import torch.nn as nn
 class QuestionAnsweringModel(nn.Module):
     def __init__(self):
         super(QuestionAnsweringModel, self).__init__()
-        self.bert = transformers.BertModel.from_pretrained(config.BASE_MODEL_PATH)
+        self.bert = transformers.BertModel.from_pretrained(config.BASE_MODEL_PATH, return_dict=False)
         self.out = nn.Linear(768, 2)
 
-    def forward(self, input_ids, mask, token_type_ids):
+    def forward(self, ids, mask, token_type_ids):
         # o1: sequence_output (batch_size, num_tokens, 768) --> (batch_size, num_tokens, 2)
         # o2: pooled_output
         o1, o2 = self.bert(ids, attention_mask=mask, token_type_ids=token_type_ids)
