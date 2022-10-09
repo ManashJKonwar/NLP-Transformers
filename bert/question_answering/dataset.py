@@ -44,7 +44,7 @@ class QuestionAnsweringDataset:
             context, 
             max_length=config.MAX_LEN,
             padding="max_length",
-            truncation=True,
+            truncation="only_second",
             return_tensors="pt",
             return_offsets_mapping=True,
             return_token_type_ids=True  
@@ -58,7 +58,7 @@ class QuestionAnsweringDataset:
 
         # Initialize lists to contain the token indices of answer start/end
         context_start_idx = 0
-        context_end_idx = len(offset_mapping) - 1
+        context_end_idx = len(offset_mapping[0]) - 1
         sequence_ids = inputs.sequence_ids()
         cls_index = input_ids[0][config.TOKENIZER.cls_token_id]
         
@@ -98,10 +98,14 @@ class QuestionAnsweringDataset:
             targets_end[inputs["end_positions"]] = 1
 
         return {
+            "context": context,
+            "answers": answers[0]['text'],
             "input_ids": input_ids,
             "mask": mask,
             "offset_mapping": offset_mapping,
             "token_type_ids": token_type_ids,
+            "context_start_idx": context_start_idx,
+            "context_end_idx": context_end_idx,
             "start_positions": inputs["start_positions"],
             "end_positions": inputs["end_positions"],
             "targets_start": torch.tensor(targets_start, dtype = torch.long),

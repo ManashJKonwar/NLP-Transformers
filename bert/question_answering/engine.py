@@ -12,6 +12,8 @@ import numpy as np
 import torch.nn as nn
 from tqdm import tqdm
 
+import config
+
 from utils import get_batch_predictions, exact_match, f1_score
 
 def loss_fn(o1, o2, t1, t2):
@@ -27,6 +29,8 @@ def train_fn(data_loader, model, optimizer, device, scheduler):
         input_ids = data['input_ids'].squeeze(1)
         mask = data['mask'].squeeze(1)
         token_type_ids = data['token_type_ids'].squeeze(1)
+        context_start_idx = data['context_start_idx']
+        context_end_idx = data['context_end_idx']
         start_positions = data['start_positions']
         end_positions = data['end_positions']
         targets_start = data['targets_start']
@@ -35,6 +39,8 @@ def train_fn(data_loader, model, optimizer, device, scheduler):
         input_ids = input_ids.to(device, dtype = torch.long)
         mask = mask.to(device, dtype = torch.long)
         token_type_ids = token_type_ids.to(device, dtype = torch.long)
+        context_start_idx = context_start_idx.to(device)
+        context_end_idx = context_end_idx.to(device)
         start_positions = start_positions.to(device)
         end_positions = end_positions.to(device)
         targets_start = targets_start.to(device, dtype = torch.float)
@@ -54,7 +60,7 @@ def train_fn(data_loader, model, optimizer, device, scheduler):
         running_loss += loss.item()
 
         # Calculating batch level em and f1 scores
-        predicted_answers = get_batch_predictions(data, start_logits, end_logits)
+        predicted_answers = get_batch_predictions(data, start_logits, end_logits, batch_size=config.TRAIN_BATCH_SIZE)
         actual_answers = data['answers']
         em = np.mean(exact_match(predicted_answers, actual_answers))
         f1 = np.mean(f1_score(predicted_answers, actual_answers))
@@ -75,6 +81,8 @@ def eval_fn(data_loader, model, device):
             input_ids = data['input_ids']
             mask = data['mask']
             token_type_ids = data['token_type_ids']
+            context_start_idx = data['context_start_idx']
+            context_end_idx = data['context_end_idx']
             start_position = data['start_position']
             end_position = data['end_position']
             targets_start = data['targets_start']
@@ -83,11 +91,12 @@ def eval_fn(data_loader, model, device):
             input_ids = input_ids.to(device, dtype = torch.long)
             mask = mask.to(device, dtype = torch.long)
             token_type_ids = token_type_ids.to(device, dtype = torch.long)
+            context_start_idx = context_start_idx.to(device)
+            context_end_idx = context_end_idx.to(device)
             start_position = start_position.to(device)
             end_position = end_position.to(device)
-            targets_start = targets_start.to(device)
-            targets_end = targets_end.to(device)
-
+            targets_start = targets_start.to(device, dtype = torch.float)
+            targets_end = targets_end.to(device, dtype = torch.float)
 
             start_logits, end_logits = model(
                 ids=input_ids,
@@ -95,13 +104,12 @@ def eval_fn(data_loader, model, device):
                 token_type_ids=token_type_ids
             )
 
-
             loss = loss_fn(start_logits, end_logits, targets_start, targets_end)
             loss.backward()
             running_loss += loss.item()
 
             # Calculating batch level em and f1 scores
-            predicted_answers = get_batch_predictions(data, start_logits, end_logits)
+            predicted_answers = get_batch_predictions(data, start_logits, end_logits, batch_size=config.VALID_BATCH_SIZE)
             actual_answers = data['answers']
             em = np.mean(exact_match(predicted_answers, actual_answers))
             f1 = np.mean(f1_score(predicted_answers, actual_answers))

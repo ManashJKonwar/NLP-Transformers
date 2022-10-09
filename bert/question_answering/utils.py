@@ -59,21 +59,21 @@ def f1_score(preds,answer):
     return f1_scores
 
 # Getting the predicted answers for a given batch
-def get_batch_predictions(example_batch,batch_start_probs,batch_end_probs,batch_size = 8):
+def get_batch_predictions(example_batch, batch_start_probs, batch_end_probs, batch_size = 8):
     pred_answers = []
-    context_start_indices = example_batch["Context_start_index"]
-    context_end_indices = example_batch["Context_end_index"]
+    context_start_indices = example_batch["context_start_idx"]
+    context_end_indices = example_batch["context_end_idx"]
     for i in range(batch_size) :
-        instance_start_probs,instance_end_probs = batch_start_probs[i],batch_end_probs[i]
-        context_start,context_end = context_start_indices[i],context_end_indices[i]
-        offset_maps = example_batch["Offset_mapping"][i]
-        context = example_batch["Context"][i]
-        best_start,best_end,best_prob = context_start,context_start,instance_start_probs[context_start] * instance_end_probs[context_start]
-        for j in range(context_start,context_end + 1) : 
-            for k in range(j,context_end + 1) : 
+        instance_start_probs, instance_end_probs = batch_start_probs[i],batch_end_probs[i]
+        context_start, context_end = context_start_indices[i], context_end_indices[i]
+        offset_maps = example_batch["offset_mapping"].squeeze(1)[i]
+        context = example_batch["context"][i]
+        best_start, best_end, best_prob = context_start, context_start, instance_start_probs[context_start] * instance_end_probs[context_start]
+        for j in range(context_start, context_end + 1) : 
+            for k in range(j, context_end + 1) : 
                 current_prob = instance_start_probs[j] * instance_end_probs[k]
                 if(current_prob > best_prob) : 
-                    best_start,best_end,best_prob = j,k,current_prob
+                    best_start, best_end, best_prob = j, k, current_prob
         start_char = offset_maps[best_start][0]
         end_char = offset_maps[best_end][1]
         ans = context[start_char:end_char]
