@@ -60,7 +60,7 @@ class QuestionAnsweringDataset:
         context_start_idx = 0
         context_end_idx = len(offset_mapping[0]) - 1
         sequence_ids = inputs.sequence_ids()
-        cls_index = input_ids[0][config.TOKENIZER.cls_token_id]
+        cls_index = input_ids[0].tolist().index(config.TOKENIZER.cls_token_id)
         
         while(sequence_ids[context_start_idx] != 1) :
             context_start_idx += 1
@@ -94,9 +94,12 @@ class QuestionAnsweringDataset:
         targets_end = [0] * len(targets)
 
         if inputs["start_positions"] is not None and inputs["end_positions"] is not None:
-            targets_start[inputs["start_positions"]] = 1
-            targets_end[inputs["end_positions"]] = 1
-
+            try:
+                targets_start[inputs["start_positions"]] = 1
+                targets_end[inputs["end_positions"]] = 1
+            except Exception:
+                print(inputs["start_positions"])
+                print(inputs["end_positions"])
         return {
             "context": context,
             "answers": answers[0]['text'],
