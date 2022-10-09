@@ -10,8 +10,8 @@ __status__ = "Development"
 import transformers
 
 MAX_LEN = 512
-TRAIN_BATCH_SIZE = 32
-VALID_BATCH_SIZE = 16
+TRAIN_BATCH_SIZE = 16
+VALID_BATCH_SIZE = 8
 EPOCHS = 10
 BASE_MODEL_PATH = "pretrained_models/bert/bert_base_uncased"
 MODEL_PATH = "output/question_answering/model.bin"
