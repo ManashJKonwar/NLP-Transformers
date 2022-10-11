@@ -149,6 +149,10 @@ if __name__ == "__main__":
     df_train = df_train.reset_index(drop=True)
     df_valid = df_valid.reset_index(drop=True)
 
+    # Limiting data to 10 % of original data
+    df_train = df_train.sample(frac=0.1, random_state=42).reset_index(drop=True)
+    df_valid = df_valid.sample(frac=0.1, random_state=42).reset_index(drop=True)
+
     train_dataset = dataset.QuestionAnsweringDataset(
         context=df_train.context,
         question=df_train.question,
