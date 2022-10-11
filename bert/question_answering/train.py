@@ -150,8 +150,10 @@ if __name__ == "__main__":
     df_valid = df_valid.reset_index(drop=True)
 
     # Limiting data to 10 % of original data
-    df_train = df_train.sample(frac=0.005, random_state=42).reset_index(drop=True)
-    df_valid = df_valid.sample(frac=0.005, random_state=42).reset_index(drop=True)
+    train_batch_no = int((0.005 * df_train.shape[0]) / config.TRAIN_BATCH_SIZE)
+    valid_batch_no = int(train_batch_no / config.VALID_BATCH_SIZE)
+    df_train = df_train.sample(n=train_batch_no * config.TRAIN_BATCH_SIZE, random_state=42).reset_index(drop=True)
+    df_valid = df_valid.sample(n=valid_batch_no * config.VALID_BATCH_SIZE, random_state=42).reset_index(drop=True)
 
     train_dataset = dataset.QuestionAnsweringDataset(
         context=df_train.context,
