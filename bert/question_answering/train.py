@@ -207,7 +207,7 @@ if __name__ == "__main__":
     best_f1 = 0
     for epoch in range(config.EPOCHS):
         train_em, train_f1, train_loss = engine.train_fn(train_data_loader, model, optimizer, device, scheduler)
-        test_em, test_f1, test_loss = engine.test_fn(valid_data_loader, model, device)
+        test_em, test_f1, test_loss = engine.eval_fn(valid_data_loader, model, device)
         print(f"Train F1 = {train_f1} Valid F1 = {test_f1}")
         if test_f1 > best_f1:
             torch.save(model.state_dict(), config.MODEL_PATH)
