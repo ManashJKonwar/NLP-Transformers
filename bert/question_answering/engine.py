@@ -83,8 +83,8 @@ def eval_fn(data_loader, model, device):
             token_type_ids = data['token_type_ids']
             context_start_idx = data['context_start_idx']
             context_end_idx = data['context_end_idx']
-            start_position = data['start_position']
-            end_position = data['end_position']
+            start_positions = data['start_positions']
+            end_positions = data['end_positions']
             targets_start = data['targets_start']
             targets_end = data['targets_end']
 
@@ -93,8 +93,8 @@ def eval_fn(data_loader, model, device):
             token_type_ids = token_type_ids.to(device, dtype = torch.long)
             context_start_idx = context_start_idx.to(device)
             context_end_idx = context_end_idx.to(device)
-            start_position = start_position.to(device)
-            end_position = end_position.to(device)
+            start_positions = start_positions.to(device)
+            end_positions = end_positions.to(device)
             targets_start = targets_start.to(device, dtype = torch.float)
             targets_end = targets_end.to(device, dtype = torch.float)
 
