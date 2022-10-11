@@ -78,9 +78,9 @@ def eval_fn(data_loader, model, device):
     running_loss = 0.0
     with torch.no_grad():
         for data in tqdm(data_loader, total=len(data_loader)):
-            input_ids = data['input_ids']
-            mask = data['mask']
-            token_type_ids = data['token_type_ids']
+            input_ids = data['input_ids'].squeeze(1)
+            mask = data['mask'].squeeze(1)
+            token_type_ids = data['token_type_ids'].squeeze(1)
             context_start_idx = data['context_start_idx']
             context_end_idx = data['context_end_idx']
             start_positions = data['start_positions']
@@ -105,7 +105,6 @@ def eval_fn(data_loader, model, device):
             )
 
             loss = loss_fn(start_logits, end_logits, targets_start, targets_end)
-            loss.backward()
             running_loss += loss.item()
 
             # Calculating batch level em and f1 scores
