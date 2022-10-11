@@ -150,8 +150,8 @@ if __name__ == "__main__":
     df_valid = df_valid.reset_index(drop=True)
 
     # Limiting data to 10 % of original data
-    df_train = df_train.sample(frac=0.1, random_state=42).reset_index(drop=True)
-    df_valid = df_valid.sample(frac=0.1, random_state=42).reset_index(drop=True)
+    df_train = df_train.sample(frac=0.005, random_state=42).reset_index(drop=True)
+    df_valid = df_valid.sample(frac=0.005, random_state=42).reset_index(drop=True)
 
     train_dataset = dataset.QuestionAnsweringDataset(
         context=df_train.context,
@@ -204,8 +204,8 @@ if __name__ == "__main__":
 
     best_f1 = 0
     for epoch in range(config.EPOCHS):
-        train_em, train_f1 = engine.train_fn(train_data_loader, model, optimizer, device, scheduler)
-        test_em, test_f1 = engine.test_fn(valid_data_loader, model, device)
+        train_em, train_f1, train_loss = engine.train_fn(train_data_loader, model, optimizer, device, scheduler)
+        test_em, test_f1, test_loss = engine.test_fn(valid_data_loader, model, device)
         print(f"Train F1 = {train_f1} Valid F1 = {test_f1}")
         if test_f1 > best_f1:
             torch.save(model.state_dict(), config.MODEL_PATH)
