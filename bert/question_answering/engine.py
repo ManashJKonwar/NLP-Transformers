@@ -70,7 +70,7 @@ def train_fn(data_loader, model, optimizer, device, scheduler):
     average_em = average_em / len(data_loader)
     average_f1 = average_f1 / len(data_loader)
     training_loss = running_loss / len(data_loader)
-    return training_loss, average_em, average_f1
+    return average_em, average_f1, training_loss
 
 def eval_fn(data_loader, model, device):
     model.eval()
