@@ -12,7 +12,7 @@ from tqdm import tqdm
 
 def train_fn(data_loader, model, optimizer, device, scheduler):
     """
-    This method is utilize to train the BERT architecture for the training sample and 
+    This function is utilize to train the BERT architecture for the training sample and 
     also calculate the loss for this epoch, store the relevant loss and at the end return 
     the averaged out loss for the train sample
 
@@ -41,7 +41,7 @@ def train_fn(data_loader, model, optimizer, device, scheduler):
 
 def eval_fn(data_loader, model, device):
     """
-    This method is utilize to evaluate the BERT architecture for the validation sample and 
+    This function is utilize to evaluate the BERT architecture for the validation sample and 
     also calculate the loss for this epoch, store the relevant loss and at the end return 
     the averaged out loss for the validation sample
 
