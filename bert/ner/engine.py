@@ -11,6 +11,21 @@ import torch
 from tqdm import tqdm
 
 def train_fn(data_loader, model, optimizer, device, scheduler):
+    """
+    This method is utilize to train the BERT architecture for the training sample and 
+    also calculate the loss for this epoch, store the relevant loss and at the end return 
+    the averaged out loss for the train sample
+
+    args: 
+    - data_loader: pytorch data loader object for the train sample
+    - model: BERT model which will be trained for detecting NERs
+    - optimizer: Adam optimizer to adjust after each data pass
+    - device: pytorch device object to consider for training
+    - scheduler: schedule object with a learning rate that decreases linearly from the initial lr set in the optimizer to 0
+
+    return:
+    - averaged out cross entropy loss for the entire train sample
+    """
     model.train()
     final_loss = 0
     for data in tqdm(data_loader, total=len(data_loader)):
@@ -25,6 +40,19 @@ def train_fn(data_loader, model, optimizer, device, scheduler):
     return final_loss / len(data_loader)
 
 def eval_fn(data_loader, model, device):
+    """
+    This method is utilize to evaluate the BERT architecture for the validation sample and 
+    also calculate the loss for this epoch, store the relevant loss and at the end return 
+    the averaged out loss for the validation sample
+
+    args: 
+    - data_loader: pytorch data loader object for the validation sample
+    - model: trained BERT model which will be validated for detecting NERs
+    - device: pytorch device object to consider for validation
+
+    return:
+    - averaged out cross entropy loss for the entire validation sample
+    """
     model.eval()
     final_loss = 0
     for data in tqdm(data_loader, total=len(data_loader)):
