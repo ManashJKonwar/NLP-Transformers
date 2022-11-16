@@ -25,6 +25,10 @@ import engine
 from model import EntityModel
 
 def process_data(data_path):
+    """
+    This function is responsible to read the datasheet, pre-process the textual content 
+    and extract label encoders for pos and ner tags within each data point
+    """
     df = pd.read_csv(data_path, encoding="latin-1")
     df.loc[:, 'Sentence #'] = df['Sentence #'].fillna(method="ffill")
 
