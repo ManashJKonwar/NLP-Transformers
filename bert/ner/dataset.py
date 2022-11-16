@@ -12,6 +12,11 @@ import torch
 
 class EntityDataset:
     def __init__(self, texts, pos, tags):
+        """
+        The main objective of this class is to structure each text data point for NER operation
+        and to convert the collection of text data and using the pretrained tokenizer extract
+        BERT attributes which will be equal to MAX_LEN for training process as well as validation
+        """
         # texts: [["hi , my name is Manash"], ["This is a dataset loader for pytorch"], ...]
         # pos/tags: [[1 2 3 4 1 5], [....], ...]
         self._texts = texts
@@ -19,9 +24,23 @@ class EntityDataset:
         self._tags = tags
 
     def __len__(self):
+        """
+        This is a getter method responsible to extract the number of textual datapoints within each 
+        training sample
+        """
         return len(self._texts)
 
     def __getitem__(self, item):
+        """
+        This is a getter method responsible for extracting textual matrices which will be utilize to fine
+        tune the base BERT model for predicting NERs
+
+        args:
+        - item (int): index of item to be considered for tokenization within the training sample data 
+
+        return: 
+        - (dict)" collection of tensors for the selected textual content
+        """
         # Extracts a specific text and related pos/tags for that item 
         text = self._texts[item]
         pos = self._pos[item]
