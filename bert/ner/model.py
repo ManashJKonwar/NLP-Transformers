@@ -13,6 +13,16 @@ import transformers
 import torch.nn as nn
 
 def loss_fn(output, target, mask, num_labels):
+    """
+    This function is utilized to calculate the overall cross entropy loss for predicted
+    logits and trace them back to labelled NER label
+
+    args:
+    - output: output tensor for text sample from model (may be either for NER tag or POS) which stores the information for each token
+    - target: target tensor for text sample from pretrained tokenizer which stores the information for each token
+    - mask: attention mask object for text sample
+    - num_labels: store the mapping of encoded NER tags / POS tags
+    """
     lfn = nn.CrossEntropyLoss()
     active_loss = mask.view(-1) == 1
     active_logits = output.view(-1, num_labels)
@@ -26,6 +36,11 @@ def loss_fn(output, target, mask, num_labels):
 
 class EntityModel(nn.Module):
     def __init__(self, num_tag, num_pos):
+        """
+        The main objective of this class is to initialize the pretrained BERT model from either the offline
+        bert files or load them from transformer module, calculate the targeted pos tags and ner tags for each 
+        token of the text content and finally return the loss for each pass of data points within each epoch
+        """
         super(EntityModel, self).__init__()
         self.num_tag = num_tag
         self.num_pos = num_pos
@@ -36,6 +51,23 @@ class EntityModel(nn.Module):
         self.out_pos = nn.Linear(768, self.num_pos)
 
     def forward(self, ids, mask, token_type_ids, target_pos, target_tag):
+        """
+        This method helps to train bert for each textual content, apply dropouts for mitigating the vanishing 
+        gradient issue and perform this for ner as well as pos tags and finally returns the cross entropy loss
+        for predicted ner and pos tags by the BERT model and validate the same using the labelled information
+
+        args:
+        - ids: token ids from BERT pretrained model
+        - mask: attention mask from BERT pretrained model for each token
+        - token_type_ids: binary mask for identifying textual sentences within a text content
+        - target_pos: pos tags for each token
+        - target_tag: ner tags for each token
+
+        return:
+        - tag: predicted tag for each token
+        - pos: predicted pos for each token
+        - loss: average cross entropy loss considering detecting ner and pos tags possibly 
+        """
         ol, _ = self.bert(ids, attention_mask=mask, token_type_ids=token_type_ids)
 
         bo_tag = self.bert_drop_1(ol)
