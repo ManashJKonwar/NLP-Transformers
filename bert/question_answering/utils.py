@@ -8,7 +8,9 @@ __email__ = "rickykonwar@gmail.com"
 __status__ = "Development"
 
 def normalize_text(s):
-    """Removing articles and punctuation, and standardizing whitespace are all typical text processing steps."""
+    """
+    This function removes articles and punctuation, and standardizing whitespace are all typical text processing steps.
+    """
     import string, re
 
     def remove_articles(text):
@@ -27,16 +29,19 @@ def normalize_text(s):
 
     return white_space_fix(remove_articles(remove_punc(lower(s))))
 
-
-# Takes 2 lists of strings and compares corresponding elements to check if they are exact matches. 
 def exact_match(preds,answer):
+    """
+    This function takes 2 lists of strings and compares corresponding elements to check if they are exact matches. 
+    """
     exact_matches = []
     for i in range(len(preds)) : 
         exact_matches.append(normalize_text(preds[i]) == normalize_text(answer[i]))
     return exact_matches
 
-# Takes 2 lists of strings and calculates the F1 scores between corresponding elements in both strings
 def f1_score(preds,answer):
+    """
+    This function takes 2 lists of strings and calculates the F1 scores between corresponding elements in both strings. 
+    """
     f1_scores = []
     for i in range(len(preds)) : 
         shared_words = 0
