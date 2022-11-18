@@ -12,6 +12,11 @@ import config
 
 class QuestionAnsweringDataset:
     def __init__(self, context, question, answers):
+        """
+        The main objective of this class is to structure each text data point for question answering operation
+        and to convert the collection of context and subsequent question data and using the pretrained tokenizer extract
+        BERT attributes which will be equal to MAX_LEN for training process as well as validation
+        """
         # context: [["This is the first context..."], ["This is the second context..."], ....]
         # question: [["what is the main context for the first context?"], ["What is the main context for the second context"], ....]
         # answers: [[{"text": "Answer1_text", "answer_start": 500, "answer_end": 510}], [{"text": "Answer1_text", "answer_start": 600, "answer_end": 615}]]
@@ -20,9 +25,23 @@ class QuestionAnsweringDataset:
         self._answers = answers
 
     def __len__(self):
+        """
+        This is a getter method responsible to extract the number of textual datapoints within each 
+        training sample
+        """
         return len(self._context)
 
     def __getitem__(self, item):
+        """
+        This is a getter method responsible for extracting textual matrices which will be utilize to fine
+        tune the base BERT model for predicting NERs
+
+        args:
+        - item (int): index of item to be considered for tokenization within the training sample data 
+
+        return: 
+        - (dict)" collection of tensors for the selected textual content (question + context)
+        """
         # Extracts specific questions and also relevant context
         context = str(self._context[item])
         context = " ".join(context.split())
