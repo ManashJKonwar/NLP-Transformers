@@ -22,6 +22,24 @@ def loss_fn(o1, o2, t1, t2):
     return (l1 + l2) / 2
 
 def train_fn(data_loader, model, optimizer, device, scheduler):
+    """
+    This function is utilize to train the BERT architecture for the training sample and 
+    also calculate the loss for this epoch, store the relevant cross entropy loss and at the end return 
+    averaged out loss, exact words match score, f1 score for the train sample considering the predicted 
+    start and end logits for the answer phrase followed by actual start and end logits within the context
+
+    args: 
+    - data_loader: pytorch data loader object for the train sample
+    - model: BERT model which will be trained for predicted start and end logits for answers to relevant questions
+    - optimizer: Adam optimizer to adjust after each data pass
+    - device: pytorch device object to consider for training
+    - scheduler: schedule object with a learning rate that decreases linearly from the initial lr set in the optimizer to 0
+
+    return:
+    - average_em: averaged out exact word match for the entire train sample
+    - average_f1: f1 score for predictions and actual answer logits
+    - training_loss: cross entropy loss for predicted and actual answer logits
+    """
     model.train()
     average_em, average_f1 = 0.0, 0.0
     running_loss = 0.0
@@ -73,6 +91,21 @@ def train_fn(data_loader, model, optimizer, device, scheduler):
     return average_em, average_f1, training_loss
 
 def eval_fn(data_loader, model, device):
+    """
+    This function is utilize to evaluate the BERT architecture for the validation sample and 
+    also calculate the loss for this epoch, store the relevant loss and at the end return 
+    averaged out loss, exact words match score, f1 score for the validation sample
+
+    args: 
+    - data_loader: pytorch data loader object for the validation sample
+    - model: trained BERT model which will be validated for validating answer start and end logits
+    - device: pytorch device object to consider for validation
+
+    return:
+    - average_em: averaged out exact word match for the entire validation sample
+    - average_f1: f1 score for predictions and actual answer logits
+    - training_loss: cross entropy loss for predicted and actual answer logits
+    """
     model.eval()
     average_em, average_f1 = 0.0, 0.0
     running_loss = 0.0
