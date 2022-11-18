@@ -27,6 +27,16 @@ import engine
 from model import QuestionAnsweringModel
 
 def add_end_index(df):
+    """
+    This function is responsible for adding end index for each answer for a single context and also justifies / validates
+    the start index if it is properly interpreted or not
+
+    args: 
+    df: input pandas dataframe (training / validation dataframes for which answer end indexes needs to be interpreted)
+
+    return:
+    modified dfs: modified dataframes with addition of answer end indexes against all posibble question answer combinations.git ad 
+    """
     df_modified = df.copy()
 
     final_list = []
@@ -63,10 +73,19 @@ def add_end_index(df):
 
 def process_data(input_file_path, is_train=True, record_path = ['data','paragraphs','qas','answers'], verbose = 1):
     """
-    input_file_path: path to the squad json file.
-    record_path: path to deepest level in json file default value is
-    ['data','paragraphs','qas','answers']
-    verbose: 0 to suppress it default is 1
+    This function is reponsible for reading the training as well as validation datasheets, structure them into proper pandas
+    dataframe which could be fed to the BERT architecture for easy processing of inputs and validation datapoints. At the same time,
+    it also adds the end index for labelled answer sets for a specific context and even justifies the start index if they are wrongly
+    interpreted in the input datasets.
+
+    args:
+    - input_file_path: path to the squad json file.
+    - record_path: path to deepest level in json file default value is
+        ['data','paragraphs','qas','answers']
+    - verbose: 0 to suppress it default is 1
+
+    return:
+    training and validation pandas dataframes
     """
     if os.path.exists(config.TRAINING_FILE) and is_train:
         df = pd.read_csv(config.TRAINING_FILE)
