@@ -121,6 +121,11 @@ BBC Summary dataset consists of news articles based summaries for 5 categories -
 Stanford Question Answering Dataset (SQuAD) is a reading comprehension dataset consisting of questions posed by crowdworkers on a set of Wikipedia articles. The answer to every question is a segment of text, or span, from the corresponding reading passage. There are 100,000+ question-answer pairs on 500+ articles. 
 
 ## **Usage**
+### **Pytorch Helper**
+Below image would help you understand how pytorch custom models are developed, different cheats that exist for handling the data using the concept of datasets and dataloaders, widely used activation functions, popular loss functions existing within Pytorch and several other hacks.  
+
+![pytorch helper sheet](./assets/pytorch_cheat_sheet.png)
+
 ### **BERT Based**  
 1. Named Entity Recognition (NER):  
     - Training custom NER Model
