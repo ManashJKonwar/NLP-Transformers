@@ -29,7 +29,19 @@ from model import TextSummarizerModel
 
 def process_data(articles_path, summaries_path, category_list=['business', 'entertainment', 'politics', 'sport', 'tech']):
     """
-    Read individual txt files and structure the contents into a single dataframe
+    This function is responsible for combining individual txt based training samples and structuring them into a single dataframe which
+    would be utilized to create the multi class text classifier.  
+
+    args:
+    - articles_path (str): base folder path for articles
+    - summaries_path (str): base folder path for summaries
+    - categories_list (list, str): classes to be considered for classifier training.
+
+    return:
+    - df: pandas dataframe consisting of articles, summaries and category columns
+    - articles: list of articles
+    - summaries: list of summaries for subsequent articles
+    - categories: lis of categories for subsequent articles   
     """
     articles, summaries, categories = [], [], []
 
@@ -63,7 +75,17 @@ def process_data(articles_path, summaries_path, category_list=['business', 'ente
 
 def extract_sentences(train_df, valid_df):
     """
-    Construct sentence and article dictionary
+    This function is responsible to construct article and summary based dictionaries
+    
+    args:
+    - train_df: training dataframe for which articles and summaries needs to broken into collection of sentences
+    - valid_df: validation dataframe for which articles and summaries needs to be broken into collection of sentences
+
+    return:
+    - train_article_dict: dictionary of article and summaries with unique indexing for training data
+    - train_sentence_list: list of sentences withim each article and summary combination for training data
+    - test_article_dict: dictionary of article and summaries with unique indexing for validation data
+    - test_sentence_list: list of sentences withim each article and summary combination for validation data
     """
     if os.path.exists(os.path.join('input', 'text_summarization', 'train_article_dict.pkl')) and \
     os.path.exists(os.path.join('input', 'text_summarization', 'train_sentence_list.pkl')) and \
