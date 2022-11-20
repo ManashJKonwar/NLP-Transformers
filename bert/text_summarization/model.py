@@ -21,6 +21,13 @@ def mean_pooling(model_output, attention_mask):
 
 class TextSummarizerModel(nn.Module):
     def __init__(self, n_feature=768, dropout=0.3):
+        """
+        The main objective of this class is to initialize the pretrained BERT model from either the offline
+        bert files or load them from transformer module, calculate the article and summary based embeddings,
+        concatenate them and finally apply, reduce the embeddings to 768D, apply relu activation, apply dropout
+        for reducing vanishing gradients and finally calculating the probability of each sentence for ranking
+        them into top k attributes for summarization.
+        """
         super(TextSummarizerModel, self).__init__()
         self.bert = transformers.BertModel.from_pretrained(config.BASE_MODEL_PATH) 
         self.pre_classifier = nn.Linear(n_feature*3, 768)
@@ -29,6 +36,19 @@ class TextSummarizerModel(nn.Module):
         self.classifierSigmoid = nn.Sigmoid()
 
     def forward(self, sent_ids, doc_ids, sent_mask, doc_mask):
+        """
+        This method helps to train bert for each textual content (summary + article) and finally returns the predicted scores
+        of each sentence being in top k ranks of important sentences catching the relevance of the main article.
+
+        args:
+        - sent_ids: token ids for summarized sentences from BERT pretrained model
+        - doc_ids: token ids for article from BERT pretrained model
+        - sent_mask: attention mask from BERT pretrained model for each token within the summarized context
+        - doc_mask: ate
+
+        return:
+        - final layer: tensor representing sigmoid scores of each sentence withing the context based on provided summary
+        """
         sent_output = self.bert(input_ids=sent_ids, attention_mask=sent_mask) 
         sentence_embeddings = mean_pooling(sent_output, sent_mask) 
         
