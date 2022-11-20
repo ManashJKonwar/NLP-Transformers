@@ -12,12 +12,32 @@ import config
 
 class TextSummarizerDataset:
     def __init__(self, data):
+        """
+        The main objective of this class is to structure each text data point for extractive text summarization operation
+        and to convert the collection of article and subsequent summary data into tokenized forms using the pretrained tokenizer 
+        extracted BERT attributes which will be equal to MAX_LEN for training process as well as validation
+        """
+        # data: pandas dataframe consisting of important columns ("docs" for relevant article and "sents" for summarized context)
         self._data = data
 
     def __len__(self):
+        """
+        This is a getter method responsible to extract the number of textual datapoints within each 
+        training sample
+        """
         return len(self._data)
 
     def __getitem__(self, item):
+        """
+        This is a getter method responsible for extracting textual matrices which will be utilize to fine
+        tune the base BERT model for generating extractive summaries by scoring each sentence within an article.
+
+        args:
+        - item (int): index of item to be considered for tokenization within the training sample data 
+
+        return: 
+        - (dict)" collection of tensors for the selected textual content (summary + article)
+        """
         # Extracts specific articles and there summary
         sentence = str(self._data.iloc[item].sents)
         sentence = " ".join(sentence.split())
